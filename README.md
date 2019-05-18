@@ -1,4 +1,4 @@
-# Hadoop_StatisticalMethod_Implementations
+# Implementations of Statistical Methods using Hadoop Map-Reduce
 1. Sum 
 2. Mean 
 3. Standard Deviation
