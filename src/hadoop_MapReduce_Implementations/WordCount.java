@@ -1,4 +1,4 @@
-package bigdataproject;
+package hadoop_MapReduce_Implementations;
 
 import java.io.IOException;
 import org.apache.hadoop.conf.Configuration;

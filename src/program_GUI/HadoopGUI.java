@@ -1,4 +1,4 @@
-package hadoopgui;
+package program_GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

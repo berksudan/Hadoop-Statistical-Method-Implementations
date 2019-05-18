@@ -1,9 +1,6 @@
-package bigdataproject;
+package hadoop_MapReduce_Implementations;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -17,7 +14,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
-public class Median_Operation {
+public class Mean_Operation {
 
 	public static void main(String[] args) throws Exception {
 		Configuration c = new Configuration();
@@ -27,9 +24,9 @@ public class Median_Operation {
 
 		@SuppressWarnings("deprecation")
 		Job j = new Job(c, "wordcount");
-		j.setJarByClass(Median_Operation.class);
-		j.setMapperClass(MapForMedianOperation.class);
-		j.setReducerClass(ReduceForMedianOperation.class);
+		j.setJarByClass(Mean_Operation.class);
+		j.setMapperClass(MapForMeanOperation.class);
+		j.setReducerClass(ReduceForMeanOperation.class);
 		j.setOutputKeyClass(Text.class);
 		j.setOutputValueClass(IntWritable.class);
 		FileInputFormat.addInputPath(j, input);
@@ -37,7 +34,7 @@ public class Median_Operation {
 		System.exit(j.waitForCompletion(true) ? 0 : 1);
 	}
 
-	public static class MapForMedianOperation extends Mapper<LongWritable, Text, Text, IntWritable> {
+	public static class MapForMeanOperation extends Mapper<LongWritable, Text, Text, IntWritable> {
 
 		private final int numOfCols = 109;
 		private final int yearIdx = 2, agesStartIdx = 5;
@@ -68,27 +65,18 @@ public class Median_Operation {
 
 	}
 
-	public static class ReduceForMedianOperation extends Reducer<Text, IntWritable, Text, IntWritable> {
+	public static class ReduceForMeanOperation extends Reducer<Text, IntWritable, Text, IntWritable> {
 
 		public void reduce(Text yearAge, Iterable<IntWritable> values, Context con)
 				throws IOException, InterruptedException {
-			int median, halfSize;
-			List<Integer> valueList = new ArrayList<Integer>();
-			
-			for (IntWritable value : values) {
-				valueList.add(value.get());
-			}
-			Collections.sort(valueList);
-			int size = valueList.size();
+			int sum = 0, count = 0, mean = 0;
 
-			if (size % 2 == 0) {
-				halfSize = size / 2;
-				median = (valueList.get(halfSize - 1) + valueList.get(halfSize)) / 2;
-			} else {
-				halfSize = (size + 1) / 2;
-				median = valueList.get(halfSize - 1);
+			for (IntWritable value : values) {
+				sum += value.get();
+				count++;
 			}
-			con.write(yearAge, new IntWritable(median));
+			mean = sum / count;
+			con.write(yearAge, new IntWritable(mean));
 		}
 	}
 }

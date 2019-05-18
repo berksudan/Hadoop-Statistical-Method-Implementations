@@ -1,4 +1,4 @@
-package hadoopgui;
+package program_GUI;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,6 +1,7 @@
-package bigdataproject;
+package hadoop_MapReduce_Implementations;
 
 import java.io.IOException;
+import java.util.*;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -14,7 +15,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
-public class Mean_Operation {
+public class StdDev_Operation {
 
 	public static void main(String[] args) throws Exception {
 		Configuration c = new Configuration();
@@ -24,9 +25,9 @@ public class Mean_Operation {
 
 		@SuppressWarnings("deprecation")
 		Job j = new Job(c, "wordcount");
-		j.setJarByClass(Mean_Operation.class);
-		j.setMapperClass(MapForMeanOperation.class);
-		j.setReducerClass(ReduceForMeanOperation.class);
+		j.setJarByClass(StdDev_Operation.class);
+		j.setMapperClass(MapForStdDevOperation.class);
+		j.setReducerClass(ReduceForStdDevOperation.class);
 		j.setOutputKeyClass(Text.class);
 		j.setOutputValueClass(IntWritable.class);
 		FileInputFormat.addInputPath(j, input);
@@ -34,7 +35,7 @@ public class Mean_Operation {
 		System.exit(j.waitForCompletion(true) ? 0 : 1);
 	}
 
-	public static class MapForMeanOperation extends Mapper<LongWritable, Text, Text, IntWritable> {
+	public static class MapForStdDevOperation extends Mapper<LongWritable, Text, Text, IntWritable> {
 
 		private final int numOfCols = 109;
 		private final int yearIdx = 2, agesStartIdx = 5;
@@ -65,18 +66,28 @@ public class Mean_Operation {
 
 	}
 
-	public static class ReduceForMeanOperation extends Reducer<Text, IntWritable, Text, IntWritable> {
-
+	public static class ReduceForStdDevOperation extends Reducer<Text, IntWritable, Text, IntWritable> {
 		public void reduce(Text yearAge, Iterable<IntWritable> values, Context con)
 				throws IOException, InterruptedException {
+			List<Integer> valueList = new ArrayList<>();
 			int sum = 0, count = 0, mean = 0;
+			int sumOfSquares = 0;
+			int stdDev = 0;
 
 			for (IntWritable value : values) {
 				sum += value.get();
 				count++;
+				valueList.add(value.get());
 			}
 			mean = sum / count;
-			con.write(yearAge, new IntWritable(mean));
+			for (int value : valueList) {
+				sumOfSquares += (value - mean) * (value - mean);
+			}
+			if(count == 1)
+				count++;
+			
+			stdDev = (int) Math.sqrt(sumOfSquares / (count - 1));
+			con.write(yearAge, new IntWritable(stdDev));
 		}
 	}
 }
