@@ -1,4 +1,4 @@
-package program_GUI;
+package programgui;
 
 import java.io.BufferedReader;
 import java.io.IOException;

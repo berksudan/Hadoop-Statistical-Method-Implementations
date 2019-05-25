@@ -1,4 +1,4 @@
-package hadoop_MapReduce_Implementations;
+package hadoopmapreducefunctions;
 
 import java.io.IOException;
 
