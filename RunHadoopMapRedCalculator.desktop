@@ -1,0 +1,12 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Exec=java -jar /home/kubrick/eclipse-workspace/BigDataProject/executables/gui.jar
+Name[en_US]=Run Hadoop MR Calculator
+Comment[en_US]=Run Hadoop MR Calculator
+Icon[en_US]=/home/kubrick/eclipse-workspace/BigDataProject/.app_logo.png
+Name=Run Hadoop MR Calculator
+Comment=Run Hadoop MR Calculator
+Icon=/home/kubrick/eclipse-workspace/BigDataProject/.app_logo.png
