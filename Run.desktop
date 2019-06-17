@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Link
-Icon=/home/kubrick/eclipse-workspace/BigDataProject/.app_logo.png
-Name=Run Program
-Terminal=false
-Path=.
-Hidden=false
-URL=./executables/gui.jar
