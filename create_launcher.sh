@@ -21,6 +21,7 @@ Icon[en_US]=$ICONFILE
 Name=$LAUNCHERNAME
 Comment=$LAUNCHERNAME
 Icon=$ICONFILE
+Path=$APPDIR
 " | tee  $LAUNCHERFILE > /dev/null
 
 chmod +x $LAUNCHERFILE
