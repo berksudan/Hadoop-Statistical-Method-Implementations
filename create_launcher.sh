@@ -5,16 +5,9 @@ APPDIR="$PWD"
 
 LAUNCHERFILE=$APPDIR/RunHadoopMapRedCalculator.desktop
 ICONFILE=$APPDIR/.app_logo.png
-APPNAME="Run Hadoop MR Calculator"
-
+LAUNCHERNAME="Run Hadoop MR Calculator"
 EXECCOMMAND="java -jar $APPDIR/executables/gui.jar"
 
-printf "Let's create a desktop launcher of your app:\n"
-printf "What is your app's command?\n"
-
-touch ~/Desktop/$appropriateName.desktop
-
-echo "Created: ~/Desktop/$appropriateName"
 
 printf "#!/usr/bin/env xdg-open
 [Desktop Entry]
@@ -22,14 +15,17 @@ Version=1.0
 Type=Application
 Terminal=false
 Exec=$EXECCOMMAND
-Name[en_US]=$APPNAME
-Comment[en_US]=$APPNAME
+Name[en_US]=$LAUNCHERNAME
+Comment[en_US]=$LAUNCHERNAME
 Icon[en_US]=$ICONFILE
-Name=$APPNAME
-Comment=$APPNAME
+Name=$LAUNCHERNAME
+Comment=$LAUNCHERNAME
 Icon=$ICONFILE
-" | tee  $LAUNCHERFILE
+" | tee  $LAUNCHERFILE > /dev/null
 
 chmod +x $LAUNCHERFILE
 
-printf "\nYour app launcher is ready: <<$LAUNCHERFILE>>" 
+echo "Icon File: \"$ICONFILE\""
+echo "Exec Command of Launcher: \"$EXECCOMMAND\""
+echo "Launcher File: \"$LAUNCHERFILE\""
+echo "Launcher Name: \"$LAUNCHERNAME\""
