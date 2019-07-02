@@ -23,17 +23,34 @@ import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class HadoopGUI extends JFrame {
+	private static final String APP_LOGO_RELATIVE_PATH = ".app_logo.png";
 
 	private JPanel hadoopContentPanel;
 
 	private static final long serialVersionUID = 1L;
-	private static final String statisticalFunctions[] = { "SUM", "MEAN", "STDDEV", "RANGE", "MEDIAN" };
+	private static final String STATISTICAL_FUNCTIONS[] = { "SUM", "MEAN", "STDDEV", "RANGE", "MEDIAN" };
 	private JButton buttonBrowseDataset, buttonBrowseJar, buttonCalculate;
 	private JComboBox<String> functionPicker;
 	private JTextField selectedInputDataset, selectedJarFile;
 	private JTextArea outputTextArea;
 	private HadoopMenuBar menubar;
 	JFrame outputFrame;
+
+	public HadoopGUI() {
+		super("Statistical Function Calculator via Hadoop 3.0");
+		initAttributes();
+		setDefaultIcon(APP_LOGO_RELATIVE_PATH);
+
+		adjustFrameSize();
+		adjustMenuBar();
+
+		configureComponents();
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setContentPane(hadoopContentPanel);
+		setVisible(true);
+
+	}
 
 	private void adjustFrameSize() {
 		Dimension constantDimension = new Dimension(500, 350);
@@ -85,26 +102,17 @@ public class HadoopGUI extends JFrame {
 		buttonCalculate = new JButton("Calculate");
 		selectedInputDataset = new JTextField("Chosen_Input_Dataset");
 		selectedJarFile = new JTextField("Chosen_Hadoop_Controller_Jar");
-		functionPicker = new JComboBox<>(statisticalFunctions);
+		functionPicker = new JComboBox<>(STATISTICAL_FUNCTIONS);
 		hadoopContentPanel = new HadoopPanel(new JComponent[] { selectedInputDataset, buttonBrowseDataset,
 				selectedJarFile, buttonBrowseJar, functionPicker, buttonCalculate });
 
 	}
 
-	public HadoopGUI() {
-		super("Statistical Function Calculator via Hadoop 3.0");
-		initAttributes();
-		setIconImage(new ImageIcon("./logo/logo.png").getImage());
-
-		adjustFrameSize();
-		adjustMenuBar();
-
-		configureComponents();
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setContentPane(hadoopContentPanel);
-		setVisible(true);
-
+	private void setDefaultIcon(String iconRelativePath) {
+		String iconFullPath = System.getProperty("user.dir") + "/" + iconRelativePath;
+		ImageIcon img = new ImageIcon(iconFullPath);
+		System.out.println(iconFullPath);
+		this.setIconImage(img.getImage());
 	}
 
 	private void executeBashScript(HadoopBashScript hbs) {
